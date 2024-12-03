@@ -1,0 +1,211 @@
+<?php 
+require_once 'db_con.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();  // Ensure session is started only once
+}
+
+if (!isset($_SESSION['user_login'])) {
+    header('Location: login.php');
+    exit(); // Ensure to exit after redirect
+}
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../css/fontawesome.min.css">
+    <link rel="stylesheet" href="../css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/fontawesome.min.js"></script>
+    <script src="../js/script.js"></script>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #1ca9c9;
+        }
+        .navbar {
+            background-color: red; 
+        }
+        .navbar-brand {
+            color: #ffffff !important;
+        }
+		
+		
+        .sidebar {
+            background-color: #367588;
+            color: #ffffff;
+            height: 115vh;
+			border: 1px solid #000000; /* Bold black border */
+			border-radius:  20px;
+			padding: 15px;
+			width: 250px; 
+        }
+        .sidebar .nav-link {
+            color: #ffffff;
+        }
+        .sidebar .nav-link.active {
+            background-color: #227442; 
+		}
+        .sidebar .nav-link.active1 {
+            background-color: #045F5F; 
+			
+			
+        }
+        .sidebar .nav-link:hover {
+            background-color: #0056b3;
+        }
+		.sidebar .nav-link {
+		color: #ffffff;
+		border: 3px solid #000000; /* Bold black border */
+		font-weight: bold; /* Bold text */
+		margin: 10px 0;
+		border-radius: 10px;
+		padding: 15px;
+	}
+
+        .content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 20px 4px rgba(0, 0, 0, 0.1);
+			width: 100%;
+        }
+     
+      
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="index.php"> <i class="fas fa-chart-line fa-3x"></i></a>  <span style="color: #007bff; font-weight: bold; font-size: 1.5rem;">MSC Entrance Documents Monitoring System</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+	
+
+    <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent">
+        <?php 
+        $showuser = $_SESSION['user_login']; 
+        $result = mysqli_query($db_con, "SELECT * FROM `users` WHERE `username`='$showuser'");
+        $showrow = mysqli_fetch_array($result);
+        ?>
+        <ul class="nav navbar-nav ">
+            <li class="nav-item"><a class="nav-link" href="index.php?page=user-profile"><i class="fa fa-user"></i> Welcome <?php echo htmlspecialchars($showrow['name']); ?>!</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.php?page=user-profile"><i class="fa fa-user"></i> Profile</a></li>
+            <li class="nav-item"><a class="nav-link" href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<div class="container-fluid"> 
+    <div class="row">
+        <!-- Sidebar -->
+		
+		<nav class="col-md-2 sidebar"> 
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+				
+				<li class="nav-item active1">
+    <a class="nav-link active1 text-center" style="color: white;">
+        <img src="OFFICE1.PNG" style="width: 180px; height: 180px; border-radius: 0%; margin-right: 5px;">
+    </a>
+</li>
+                  <li class="nav-item">
+						<a class="nav-link active text-left" href="index.php?page=dashboard" style="color: white;">
+							<i class="fas fa-tachometer-alt" style="font-size: 30px;"></i>
+							<span style="font-size: 18px; margin-left: 10px;">Dashboard</span>
+						</a>
+					</li>
+
+                    <li class="nav-item">
+                      <a class="nav-link  text-left" href="index.php?page=add-student" style="color: white;">
+                      <i class="fa fa-user-plus" style="font-size: 30px;  color:black"></i> 
+					<span style="font-size: 18px; margin-left: 10px;">Add Student</span>
+                        </a>
+                    </li>
+					
+                    <li class="nav-item">
+                        <a class="nav-link text-left" href="index.php?page=all-student" style="color: white;">
+                         <i class="fas fa-users" style="font-size: 30px; 	color: #CA762B;"></i> 
+					<span style="font-size: 18px; margin-left: 10px;"> All Students  </span>
+                        </a>
+                    </li>
+					
+					
+                    <li class="nav-item"> 
+                        <a class="nav-link text-left" href="index.php?page=all-users" style="color: white;">   
+                     <i class="fas fa-users-cog" style= "font-size: 30px; color: beige;"></i>
+					 <span style="font-size: 18px; margin-left: 10px;"> All Users </span>
+                        </a>
+                    </li>
+					
+                    <li class="nav-item">
+                        <a class="nav-link text-left" href="index.php?page=user-profile" style="color: white;"> 
+                      <i class="fa fa-cog" style="font-size: 30px; color: gold;"></i>
+					   <span style="font-size: 18px; margin-left: 10px;">  User Profile </span>
+                        </a>
+                    </li>
+                    <!-- Add the Summary Report link here -->
+                    <li class="nav-item"> 
+                        <a class="nav-link text-center "href="index.php?page=summary_report" style="color: white;">
+                            <i class= " fas fa-clipboard-list" style="font-size: 30px; color: blue;"></i>
+						  <span style="font-size: 18px; margin-left: 10px;"> 	Summary Report </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-10 ml-sm-auto px-4">
+            <div class="content">
+              <?php 
+                // Sanitize the page parameter to avoid directory traversal
+                if (isset($_GET['page'])) {
+                    $page = basename($_GET['page']).'.php';
+                } else {
+                    $page = 'dashboard.php';
+                }
+
+                if (file_exists($page)) {
+                    require_once $page;
+                } else {
+                    require_once '404.php';
+                }
+              ?>
+            </div>
+        </main>
+    </div>
+</div>
+<br><br>
+<footer>
+    <div class="container">  &nbsp
+	  <center>
+      <p>  <b> <?php echo date('Y'); ?> Entrance Documents Monitoring System.CAPSU Mambusao Satellite College Registrar. </p>   <b> </center>  
+    </div> &nbsp; 
+</footer>
+<script src="../js/jquery-3.5.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script src="../js/dataTables.bootstrap4.min.js"></script>
+<script src="../js/fontawesome.min.js"></script>
+<script src="../js/script.js"></script>
+<script>
+    jQuery('.toast').toast('show');
+</script>
+</body>
+</html>
