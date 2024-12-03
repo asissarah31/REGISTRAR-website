@@ -1,0 +1,77 @@
+
+
+/* Print Styles */
+@media print {
+	
+    body {
+        font-size: 12px; /* Ensure readability for print */
+    }
+	/* Prevent text wrapping in table cells */
+	.table td, .table th {
+		white-space: nowrap; /* Force content to stay in one line */
+		overflow: hidden; /* Prevent overflow */
+		text-overflow: ellipsis; /* Add ellipsis if text is too long */
+	}
+
+
+    .table td, .table th {
+        padding: 2px;
+        text-align: center;
+        vertical-align: middle;
+		white-space: nowrap;
+    }
+
+    .completed {
+        background-color: #87CEEB !important;
+        color: black !important;
+        font-weight: bold;
+    }
+
+    .missing {
+        background-color: #FF6347 !important;
+        color: #006A4E !important; /* Corrected color format */
+        font-weight: bold;
+    }
+
+    .table td.student-id, .table td.academic-year {
+        width: auto !important;
+        white-space: nowrap; /* Prevents wrapping for Student ID and Academic Year */
+    }
+
+    /* Align Student ID and Academic Year in one line */
+    .student-details {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Space between ID and Academic Year */
+    }
+
+    /* Header and Footer */
+    .print-header, .print-footer {
+        display: block;
+        text-align: center;
+        position: fixed;
+        width: 100%;
+        font-size: 12px;
+        padding-top: 10px;
+        border-top: 1px solid #000;
+    }
+
+    .print-header {
+        top: 0;
+        border-top: none;
+    }
+
+    .print-footer {
+        bottom: 0;
+    }
+
+    .print-content {
+        margin-top: 500px; /* Adjust for header */
+        margin-bottom: 100px; /* Adjust for footer */
+    }
+
+    /* Prevent page breaks inside rows */
+    tr {
+        page-break-inside: avoid;
+    }
+}
